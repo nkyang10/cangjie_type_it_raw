@@ -58,14 +58,4 @@ jobs:
           python-version: "3.12"
 
       - name: Verify dictionary is loadable
-        run: python -c "
-import sys
-sys.path.insert(0, '.')
-from cj_decoder import load_dictionary
-code_to_chars, char_to_codes = load_dictionary('cj3.txt')
-print(f'Loaded {len(code_to_chars)} codes, {len(char_to_codes)} characters')
-assert len(code_to_chars) > 50000, 'Dictionary too small'
-assert 'onf' in code_to_chars, 'Missing 你 (onf)'
-assert 'okr' in code_to_chars, 'Missing 知 (okr)'
-print('Dictionary validation passed')
-"
+        run: python scripts/verify_dict.py

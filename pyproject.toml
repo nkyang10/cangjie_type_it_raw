@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "cangjie-type-it-raw"
+version = "1.0.0"
+description = "Cangjie Input Code Decoder — decode Cangjie key sequences into Chinese characters with fuzzy matching"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+
+authors = [
+    {name = "M Y", email = "nkyang10@gmail.com"},
+]
+
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: Chinese (Traditional)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Text Processing :: Linguistic",
+    "Topic :: Utilities",
+]
+
+keywords = ["cangjie", "chinese", "input-method", "decoder", "倉頡"]
+
+[project.urls]
+Homepage = "https://github.com/nkyang10/cangjie_type_it_raw"
+Repository = "https://github.com/nkyang10/cangjie_type_it_raw"
+Issues = "https://github.com/nkyang10/cangjie_type_it_raw/issues"
+"Dictionary Source" = "https://github.com/Arthurmcarthur/Cangjie3-Plus"
+
+[project.scripts]
+cj-decode = "cj_decoder:main"
+
+[tool.setuptools]
+py-modules = ["cj_decoder"]
+packages.find = {include = ["cj_decoder*"]}
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+
+[tool.coverage.run]
+source = ["cj_decoder"]
+omit = ["tests/*"]

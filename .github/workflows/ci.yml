@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install ruff
+
+      - name: Lint with ruff
+        run: ruff check cj_decoder.py
+
+      - name: Check formatting
+        run: ruff format --check cj_decoder.py
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: pip install pytest
+
+      - name: Run tests
+        run: python -m pytest -v
+
+  test-dict:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify dictionary is loadable
+        run: python -c "
+import sys
+sys.path.insert(0, '.')
+from cj_decoder import load_dictionary
+code_to_chars, char_to_codes = load_dictionary('cj3.txt')
+print(f'Loaded {len(code_to_chars)} codes, {len(char_to_codes)} characters')
+assert len(code_to_chars) > 50000, 'Dictionary too small'
+assert 'onf' in code_to_chars, 'Missing 你 (onf)'
+assert 'okr' in code_to_chars, 'Missing 知 (okr)'
+print('Dictionary validation passed')
+"

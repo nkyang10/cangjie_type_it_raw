@@ -38,22 +38,71 @@
 # 安裝
 pip install cangjie-type-it-raw
 
-# 解碼一句句子
+# 經典case：又唔記得轉輸入法
 cj-decode onf okr rmmr okr oin a rtq mk onfd
 # → 你知唔知今日咩天氣
+# （仲要係天文台 app check 完先覆人）
+```
 
-# 混合輸入（英文/數字原樣保留）
-cj-decode 2 amazon owjr omwc rtq bucnh egi
-# → 2 amazon 個價咩看法？
+### 🎬 生活情境
 
-# Pipe 輸入
-echo "onf okr rmmr" | cj-decode
+#### 「我真係有㩒到轉輸入法㗎 🤡」
 
-# 互動模式
+Group chat 入面收到呢段嘢，唔使叫佢打多次，一嘢解碼：
+
+```bash
+echo "onf kb bucnh owjr omwc rtq hqbu egi ?" | cj-decode
+# → 你有睇個價咩看法？
+# （定係又輸咗錢）
+```
+
+#### 凌晨三點 Code 到懵咗
+
+寫緊 code 寫到癲，喺 Telegram 打咗段倉頡碼當中文出咗。唔好 delete，解咗佢：
+
+```bash
+cj-decode onf oin a rtq mk onfd hghu
+# → 你今日咩天氣先
+# （寫 code 寫到癲都仲掛住聽日會唔會落雨）
+```
+
+#### 約飲茶 🥟
+
+一大班 friend 約飲茶，電話 keyboard 又 short short 地：
+
+```bash
+cj-decode onf oin anau hoami rmmr hoami anb oino tod
+# → 你今晚得唔得閒飲茶
+# （夜晚飲茶？夜晚飲茶！）
+```
+
+#### Tech Support Mode 🛠️
+
+Friend：「我打咗啲嘢出嚟亂晒龍」
+
+你，full CLI mode：
+
+```bash
 cj-decode --interactive
+cj> onf okr rmmr okr onfd
+你知唔知氣
+cj> /lookup onfd
+Code: onfd
+Radicals: 人 → 弓 → 火 → 木
+Characters (1):
+  1. 氣 (U+6C23)
+cj> ^D
+# 救世主模式。收工。
+```
 
-# 查單一編碼
-cj-decode --lookup onf
+#### 排隊買珍珠奶茶 🧋
+
+排緊隊，電話 keyboard 鬼打牆，但都要叫嘢飲：
+
+```bash
+cj-decode onf dup oino rtq ? vnhs tod jmyo rksr rlmy
+# → 你想飲咩？奶茶定咖啡？
+# （珍珠奶茶，always）
 ```
 
 ### 唔安裝直接用

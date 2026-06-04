@@ -37,22 +37,71 @@ Perfect for:
 # Install
 pip install cangjie-type-it-raw
 
-# Decode a sentence
+# The classic: "Ah crap, I typed in Cangjie again"
 cj-decode onf okr rmmr okr oin a rtq mk onfd
 # → 你知唔知今日咩天氣
+# (Translation: "Do you know what the weather's like today?")
+```
 
-# Decode mixed input (English/numbers pass through)
-cj-decode onf kb mu amazon owjr omwc rtq bucnh
-# → 你有睇 amazon 個價咩看法
+### 🎬 Real-Life Scenarios
 
-# Pipe input
-echo "onf okr rmmr" | cj-decode
+#### "Bro I swear I switched to Chinese"
 
-# Interactive mode
+Your friend just sent you this in a group chat. Don't make them retype it — decode it in one line.
+
+```bash
+echo "onf kb bucnh owjr omwc rtq hqbu egi ?" | cj-decode
+# → 你有睇個價咩看法？
+# ("Did you see the price? What do you think?")
+```
+
+#### 3AM Coding Sprint
+
+You're deep in a terminal, half-asleep, and accidentally typed Cangjie codes straight into your Telegram message instead of Chinese. Don't delete it — decode it.
+
+```bash
+cj-decode onf oin a rtq mk onfd hghu
+# → 你今日咩天氣先
+# Because even sleep-deprived, you're still asking about the weather.
+```
+
+#### Dim Sum Run 🥟
+
+Planning a chaotic dim sum trip with friends:
+
+```bash
+cj-decode onf oin anau hoami rmmr hoami anb oino tod
+# → 你今晚得唔得閒飲茶
+# ("You free tonight for dim sum?")
+```
+
+#### Tech-Support Mode 🛠️
+
+Your friend: "I typed something in and it came out all weird"
+
+You, in full CLI energy:
+
+```bash
 cj-decode --interactive
+cj> onf okr rmmr okr onfd
+你知唔知氣
+cj> /lookup onfd
+Code: onfd
+Radicals: 人 → 弓 → 火 → 木
+Characters (1):
+  1. 氣 (U+6C23)
+cj> ^D
+# Problem solved. You're a hero.
+```
 
-# Look up a single code
-cj-decode --lookup onf
+#### Bubble Tea Line 🧋
+
+Standing in line, phone keyboard glitching, still need to order:
+
+```bash
+cj-decode onf dup oino rtq ? vnhs tod jmyo rksr rlmy
+# → 你想飲咩？奶茶定咖啡？
+# (Bubble tea or coffee? The eternal debate.)
 ```
 
 ### Run Without Installing

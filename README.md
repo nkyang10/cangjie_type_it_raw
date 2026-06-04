@@ -21,6 +21,10 @@
 
 ---
 
+> 🌐 **中文版：[香港粵語](README.zh-HK.md) · [台灣繁體](README.zh-TW.md)**
+
+---
+
 ## Overview
 
 **Cangjie Type It Raw** decodes Cangjie input method (倉頡輸入法) key sequences into Chinese characters. It handles mixed input — English words, numbers, and punctuation pass through unchanged while Cangjie codes are decoded in context. Fuzzy matching automatically corrects typos.

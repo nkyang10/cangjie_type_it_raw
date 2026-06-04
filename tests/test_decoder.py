@@ -122,7 +122,7 @@ class TestDecoding:
 
     def test_mixed_decode(self):
         code_to_chars, _ = _get_dict()
-        result, errors = decode_sentence('onf kb mu amazon owjr omwc', code_to_chars)
+        result, errors = decode_sentence('onf kb bucnh amazon owjr omwc', code_to_chars)
         assert '你' in result
         assert '有' in result
         assert '睇' in result
@@ -147,6 +147,17 @@ class TestDecoding:
         result, errors = decode_sentence('onf okr rmmr okr oin a rtq mk onfd', code_to_chars)
         assert all('\u4e00' <= c <= '\u9fff' or c == ' ' for c in result), \
             f"Output contains non-CJK chars: {result}"
+
+    def test_mixed_with_correct_look(self):
+        """睇 = bucnh in Cangjie 3"""
+        code_to_chars, _ = _get_dict()
+        result, errors = decode_sentence('onf kb bucnh amazon owjr omwc', code_to_chars)
+        assert '你' in result
+        assert '有' in result
+        assert '睇' in result
+        assert 'amazon' in result
+        assert '個' in result
+        assert '價' in result
 
 
 # ── Fuzzy matching ────────────────────────────────────────────────────

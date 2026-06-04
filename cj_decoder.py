@@ -64,6 +64,8 @@ COMMON_ENGLISH = {
     'upper', 'value', 'visit', 'voice', 'watch', 'water', 'where',
     'which', 'while', 'white', 'whole', 'whose', 'woman', 'women',
     'world', 'worry', 'would', 'write', 'wrong', 'young',
+    'the', 'this', 'that', 'these', 'those', 'them', 'then', 'than',
+    'with', 'have', 'from', 'they', 'what', 'when', 'where', 'there',
     'amazon', 'google', 'apple', 'microsoft', 'tesla', 'meta', 'netflix',
 }
 
@@ -126,14 +128,19 @@ def is_likely_english(word):
 
 def is_cangjie_code(word):
     """Check if the token looks like a valid Cangjie code sequence."""
-    word = word.lower().strip()
+    word = word.strip()
     if len(word) > 5:
         return False
     if not word.isalpha():
         return False
-    if word != word.lower():
+    lower = word.lower()
+    if word != lower:
         return False
-    if is_likely_english(word):
+    # Single/double letter codes are always valid Cangjie (e.g. 'a' = 日)
+    # and too ambiguous to classify as English-only
+    if len(word) <= 2:
+        return True
+    if is_likely_english(lower):
         return False
     return True
 
@@ -184,27 +191,50 @@ def similarity(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
 
-def fuzzy_search(code, code_to_chars, threshold=0.6, max_results=5):
+def _position_score(a, b):
+    """
+    Compute a position-aware match score.
+    Rewards same characters at same positions (higher than SequenceMatcher
+    for partial matches) and penalizes insertions/deletions.
+    """
+    # For same-length strings, use Hamming-style scoring
+    if len(a) == len(b):
+        matches = sum(1 for ca, cb in zip(a, b) if ca == cb)
+        return matches / max(len(a), len(b))
+    # For different lengths, use prefix matching bonus
+    shared = sum(1 for ca, cb in zip(a, b) if ca == cb)
+    return shared / max(len(a), len(b))
+
+
+def fuzzy_search(code, code_to_chars, threshold=0.55, max_results=20):
     """
     Find characters whose Cangjie codes are similar to the input code.
-    Uses SequenceMatcher ratio matching.
+    Uses a composite score: SequenceMatcher ratio + position-aware match.
     """
     candidates = []
     for known_code, chars in code_to_chars.items():
-        if abs(len(known_code) - len(code)) > 3:
+        if abs(len(known_code) - len(code)) > 2:
             continue
-        score = similarity(code, known_code)
-        if score >= threshold:
-            for char in chars:
-                candidates.append((score, known_code, char))
+        sm_score = similarity(code, known_code)
+        if sm_score < threshold:
+            continue
+        pos_score = _position_score(code, known_code)
+        composite = (sm_score + pos_score) / 2
+        for char in chars:
+            candidates.append((composite, sm_score, known_code, char))
 
-    candidates.sort(key=lambda x: (-x[0], x[1]))
+    def sort_key(item):
+        composite, sm_score, known_code, char = item
+        same_len = 1.0 if len(known_code) == len(code) else 0.0
+        return (-composite, -same_len, -sm_score, abs(len(known_code) - len(code)), known_code)
+
+    candidates.sort(key=sort_key)
     seen = set()
     unique = []
-    for score, known_code, char in candidates:
+    for composite, sm_score, known_code, char in candidates:
         if char not in seen:
             seen.add(char)
-            unique.append((score, known_code, char))
+            unique.append((sm_score, known_code, char))
 
     return unique[:max_results]
 

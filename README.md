@@ -117,9 +117,6 @@ python3 cj_decoder.py onf okr rmmr okr oin a rtq mk onfd
 Mixed input is handled seamlessly — English words, numbers, and punctuation are left as-is while Cangjie codes are decoded:
 
 ```bash
-cj-decode umr umr smmri anau 2 amazon owjr omwc rtm nmnsm
-# → 岩岩尋晚 2 amazon 個價咁驺
-
 cj-decode onf kb rtq bucnh egi ?
 # → 你有咩看法 ？
 ```

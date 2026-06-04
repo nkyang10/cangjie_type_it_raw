@@ -118,9 +118,6 @@ python3 cj_decoder.py onf okr rmmr okr oin a rtq mk onfd
 混合輸入自動識別，英文、數字、標點保留原樣：
 
 ```bash
-cj-decode umr umr smmri anau 2 amazon owjr omwc rtm nmnsm
-# → 岩岩尋晚 2 amazon 個價咁驺
-
 cj-decode onf kb rtq bucnh egi ?
 # → 你有咩看法 ？
 ```
